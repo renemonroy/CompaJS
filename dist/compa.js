@@ -15,7 +15,9 @@
       constructor : Class,
       children : [],
       init : function(config) {
-        for ( var prop in config ) { this[prop] = config[prop]; }
+        for ( var prop in config ) {
+          this[prop] = config[prop];
+        }
         if ( this.el == null ) {
           var tmp = doc.createElement('div');
           tmp.innerHTML = this.constructor.html || '<div></div>';
