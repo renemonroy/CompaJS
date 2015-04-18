@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>CompaJS example</title>
+        <script src="./js/compa.min.js"></script>
+    </head>
+    <body>
+      <div id="wrapper"></div>
+      <script>
+        var moviesData = [
+          { title : 'The Movie', year : 1996 },
+          { title : 'The Movie 2', year : 1998 },
+          { title : 'The Movie 3', year : 2001 }
+        ];
+        /**
+         * Builds 2 components that are going to be instantiated and rendered
+         * later. These are saved automatically on a global namespace named UI.
+         */
+        (function(win, doc) {
+          'use strict';
+
+          Compa('Movie')({
+            html : '<div class="item">' +
+                '<p>' +
+                  '<strong class="title"></strong> - <em class="year"></em>' +
+                '</p>' + 
+              '</div>',
+            prototype : {
+              title : null,
+              year : null,
+              onStart : function() {
+                this.titleEl = this.getElByClass('title')[0];
+                this.yearEl = this.getElByClass('year')[0];
+                if ( this.title ) this.updateTitle(this.title);
+                if ( this.year ) this.updateYear(this.year);
+              },
+              updateTitle : function(str) {
+                this.titleEl.textContent = str;
+              },
+              updateYear : function(str) {
+                this.yearEl.textContent = str;
+              }
+            }
+          });
+
+          Compa('MoviesList')({
+            html : '<div class="items-list"></div>',
+            prototype : {
+              reqUrl : null,
+              onStart : function() {
+                console.log('>>> ItemsList component started...');
+                this._buildMovies();
+              },
+              _buildMovies : function() {
+                var compa = this,
+                  frag = doc.createDocumentFragment();
+                this.movies.forEach( function(movie) {
+                  var myMovie = compa.appendChild( new UI.Movie({
+                    title : movie.title,
+                    year : movie.year
+                  }));
+                  frag.appendChild(myMovie.el);
+                });
+                compa.el.appendChild(frag);
+              },
+              onRender : function() {
+                console.log('>>> ItemsList component rendered...');
+              }
+            }
+          });
+
+          /**
+           * This instantiates the component MoviesList by passing the data.
+           */
+          win.moviesListInstance = new UI.MoviesList({
+            movies : moviesData
+          }).render(doc.getElementById('wrapper'));
+
+        })(window, document);
+
+      </script>
+    </body>
+</html>
