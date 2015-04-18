@@ -1,7 +1,8 @@
 (function(win, doc) {
   'use strict';
 
-  var compas = win.compas || {};
+  win.Compa = win.Compa || {},
+  win.UI = win.UI || {};
 
   win.Compa = function(compaName) {
     var configCompa;
@@ -145,7 +146,7 @@
           Class[j] = definition[j];
         }
       }
-      compa[compaName] = Class;
+      UI[compaName] = Class;
       return Class;
     };
     return configCompa;
