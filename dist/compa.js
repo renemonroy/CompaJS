@@ -94,8 +94,10 @@
         return this;
       },
       enable : function() {
+        if ( this.onBeforeEnable ) this.onBeforeEnable();
         this.disabled = false;
         this.removeClass('disable');
+        if ( this.onEnable ) this.onEnable();
         return this;
       },
       destroy : function() {
